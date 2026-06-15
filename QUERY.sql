@@ -1,8 +1,5 @@
 -- =========================================================================
 -- SYSTEM: Football Ticket Booking System Database Setup Template
--- DESCRIPTION: Pseudo-DDL Template for Table Creation & Data Insertion
--- INSTRUCTIONS: Replace 'TYPE' and the constraint placeholders with your own
---               actual data types, relational keys, and check criteria.
 -- =========================================================================
 
 -- DROP TABLES IF THEY ALREADY EXIST TO PREVENT CONFLICTS
@@ -19,10 +16,6 @@ CREATE TABLE Users (
     email VARCHAR(100) UNIQUE NOT NULL,
     role VARCHAR(50) CHECK (role IN ('Ticket Manager', 'Football Fan')),
     phone_number VARCHAR(20)
-    
-    -- Write your constraint to make 'user_id' the Primary Key
-    -- Write your constraint to ensure 'email' values are never duplicated
-    -- Write your check constraint to restrict 'role' to specific allowed strings
 );
 
 -- =========================================================================
@@ -34,10 +27,6 @@ CREATE TABLE Matches (
     tournament_category VARCHAR(100) NOT NULL,
     base_ticket_price DECIMAL(10, 2) CHECK (base_ticket_price >= 0),
     match_status VARCHAR(50) CHECK (match_status IN ('Available', 'Selling Fast', 'Sold Out', 'Postponed'))
-    
-    -- Write your constraint to make 'match_id' the Primary Key
-    -- Write your check constraint to prevent negative ticket prices
-    -- Write your check constraint to restrict 'match_status' values
 );
 
 -- =========================================================================
@@ -53,12 +42,6 @@ CREATE TABLE Bookings (
     
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (match_id) REFERENCES Matches(match_id) ON DELETE CASCADE
-    
-    -- Write your constraint to make 'booking_id' the Primary Key
-    -- Write your Foreign Key constraint linking 'user_id' to the Users table
-    -- Write your Foreign Key constraint linking 'match_id' to the Matches table
-    -- Write your check constraint to ensure 'total_cost' is non-negative
-    -- Write your check constraint to restrict 'payment_status' values
 );
 
 
