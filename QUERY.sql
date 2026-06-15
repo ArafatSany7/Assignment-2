@@ -14,11 +14,11 @@ DROP TABLE IF EXISTS Users;
 -- 1. CREATE USERS TABLE
 -- =========================================================================
 CREATE TABLE Users (
-    user_id TYPE,
-    full_name TYPE,
-    email TYPE,
-    role TYPE,
-    phone_number TYPE,
+   user_id INT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    role VARCHAR(50) CHECK (role IN ('Ticket Manager', 'Football Fan')),
+    phone_number VARCHAR(20)
     
     -- Write your constraint to make 'user_id' the Primary Key
     -- Write your constraint to ensure 'email' values are never duplicated
@@ -29,11 +29,11 @@ CREATE TABLE Users (
 -- 2. CREATE MATCHES TABLE
 -- =========================================================================
 CREATE TABLE Matches (
-    match_id TYPE,
-    fixture TYPE,
-    tournament_category TYPE,
-    base_ticket_price TYPE,
-    match_status TYPE,
+    match_id INT PRIMARY KEY,
+    fixture VARCHAR(150) NOT NULL,
+    tournament_category VARCHAR(100) NOT NULL,
+    base_ticket_price DECIMAL(10, 2) CHECK (base_ticket_price >= 0),
+    match_status VARCHAR(50) CHECK (match_status IN ('Available', 'Selling Fast', 'Sold Out', 'Postponed'))
     
     -- Write your constraint to make 'match_id' the Primary Key
     -- Write your check constraint to prevent negative ticket prices
@@ -44,12 +44,15 @@ CREATE TABLE Matches (
 -- 3. CREATE BOOKINGS TABLE
 -- =========================================================================
 CREATE TABLE Bookings (
-    booking_id TYPE,
-    user_id TYPE,
-    match_id TYPE,
-    seat_number TYPE,
-    payment_status TYPE,
-    total_cost TYPE,
+    booking_id INT PRIMARY KEY,
+    user_id INT,
+    match_id INT,
+    seat_number VARCHAR(10),
+    payment_status VARCHAR(50) CHECK (payment_status IN ('Pending', 'Confirmed', 'Cancelled', 'Refunded')),
+    total_cost DECIMAL(10, 2) CHECK (total_cost >= 0),
+    
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (match_id) REFERENCES Matches(match_id) ON DELETE CASCADE
     
     -- Write your constraint to make 'booking_id' the Primary Key
     -- Write your Foreign Key constraint linking 'user_id' to the Users table
